@@ -34,6 +34,10 @@ header {
 	margin-bottom: 9px;
 	background-image: url('../images/black_60.png');
 }
+#langBar {
+	text-align: right;
+	vertical-align:middle;
+}
 #content {
 	height: 498px;
 	margin-bottom: 9px;

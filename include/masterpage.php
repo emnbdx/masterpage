@@ -1,26 +1,52 @@
 <?php
+
+session_start();
+
+define('__MASTERROOT__', dirname(dirname(__FILE__))); 
+require_once(__MASTERROOT__.'/include/resources.php'); 
+
+if(!isset($_SESSION["language"])) {
+    $_SESSION["language"] = 'default';
+}
+
+if (isset($_GET['lang'])) {
+    $_SESSION["language"] = $_GET['lang'];
+}
+
+/*
+ * Localize text from resources.php file
+ * Use this function localize(myvar) to localize according to session language 
+ */
+function localize($s) {   
+	global $messages;
+	
+	if (isset($messages[$_SESSION["language"]][$s])) {
+		return $messages[$_SESSION["language"]][$s];
+	} else if (isset($messages['default'][$s])) {
+		return $messages['default'][$s];
+	} else {    
+		error_log("l10n error:LANG:" . 
+			$_COOKIE["language"] .",message:'$s'");
+	}
+}
+
 class MasterPage {
 
 	private static $_instance = null;
 	/*
-	 * Define all menu here, go to http://localhost/index.php and all file will create immediately on contenu folder
+	 * Define all menu here, go to http://localhost/index.php and all file will create immediately on 'contenu' folder
 	 * Then you have to complete function setHead(''); with css or javascript code
 	 * and function setContent(''); with HTML code
 	 */
 	private static $_menuItem = array(array("id" => "index",
-											"name" => "Accueil",
 											"page" => "/index.php"), 
 									array("id" => "price",
-											"name" => "Tarifs",
 											"page" => "/contenu/tarifs.php"), 
 									array("id" => "me",
-											"name" => "Qui suis-je?",
 											"page" => "/contenu/qui-suis-je.php"), 
 									array("id" => "contact",
-											"name" => "Contact",
 											"page" => "/contenu/contact.php"), 
 									array("id" => "work",
-											"name" => "Réalisations",
 											"page" => "/contenu/realisations.php"));
 											
 	private $_rootPath;
@@ -54,15 +80,16 @@ class MasterPage {
 			if (!file_exists($filename)) {
 				$fp = fopen($filename, 'w');
 				fwrite($fp, '<?php' . "\r\n");
-				fwrite($fp, "\t" . 'require_once(\'../include/masterpage.php\');' . "\r\n");
+				fwrite($fp, "\t" . 'define(\'__PAGEROOT__\', dirname(dirname(__FILE__)));' . "\r\n");
+				fwrite($fp, "\t" . 'require_once(__PAGEROOT__.\'/include/masterpage.php\');' . "\r\n\r\n");
 				fwrite($fp, "\t" . '$master = MasterPage::getInstance(\'..\');' . "\r\n");
-				fwrite($fp, "\t" . '$master->setTitle(\'E.M. Réparation | ' . self::$_menuItem[$i]["name"] . '\');' . "\r\n");
+				fwrite($fp, "\t" . '$master->setTitle(\'E.M. Réparation | ' . localize(self::$_menuItem[$i]["id"]) . '\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setCurrentPage(\'' . self::$_menuItem[$i]["id"] . '\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setHead(\'\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setContent(' . "\r\n");
-				fwrite($fp, "\t\t" . '\'<div id="content">' . "\r\n");
-				fwrite($fp, "\t\t\t" . 'This is an auto generated page' . "\r\n");
-				fwrite($fp, "\t\t" . '</div>\');' . "\r\n");
+				fwrite($fp, "\t\t" . '\'<div id="content">\'' . "\r\n");
+				fwrite($fp, "\t\t\t" . '. localize(\'dummytext\') .' . "\r\n");
+				fwrite($fp, "\t\t" . '\'</div>\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->display();' . "\r\n");
 				fwrite($fp, '?>' . "\r\n");
 				fclose($fp);
@@ -135,6 +162,15 @@ class MasterPage {
 		echo '<body>';
 			echo '<table id="mainTable">';
 				echo '<tr>';
+					echo '<td id="langBar">';
+					
+					global $languages;
+					foreach (array_keys($languages) as $language) {
+						echo '	<a href="?lang=' . $language . '"><img width="50" height="50" src="' . $this->_rootPath . $languages[$language]["img"] . '" alt="'. $languages[$language]["alt"] . '" /></a>';
+					}
+					echo '</td>';
+				echo '</tr>';
+				echo '<tr>';
 					echo '<td>';
 						echo '<header>';
 						echo '		<div id="menu">';
@@ -144,13 +180,13 @@ class MasterPage {
 						$arrayLength = count(self::$_menuItem);
 						for ($i = 0; $i < $arrayLength; $i++) {
 							echo '				<td class="'; $this->getClass(self::$_menuItem[$i]["id"]); 
-							echo '" width="' . (100 / $arrayLength) . '%"><a id="'. self::$_menuItem[$i]["id"] . '" href="' . $this->_rootPath . self::$_menuItem[$i]["page"] . '">' . self::$_menuItem[$i]["name"] . '</a></td>';
+							echo '" width="' . (100 / $arrayLength) . '%"><a id="'. self::$_menuItem[$i]["id"] . '" href="' . $this->_rootPath . self::$_menuItem[$i]["page"] . '">' . localize(self::$_menuItem[$i]["id"]) . '</a></td>';
 						}
 						echo '			</tr>';
 						echo '		</table>';
 						echo '		</div>';
 						echo '		<div id="title">';
-						echo '			<span class="auto-style1">E.M.</span> Réparation';
+						echo '			<span class="auto-style1">Mon</span> Site';
 						echo '		</div>';
 						echo '	</header>';
 					echo '</td>';
