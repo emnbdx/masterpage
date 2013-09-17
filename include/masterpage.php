@@ -83,7 +83,7 @@ class MasterPage {
 				fwrite($fp, "\t" . 'define(\'__PAGEROOT__\', dirname(dirname(__FILE__)));' . "\r\n");
 				fwrite($fp, "\t" . 'require_once(__PAGEROOT__.\'/include/masterpage.php\');' . "\r\n\r\n");
 				fwrite($fp, "\t" . '$master = MasterPage::getInstance(\'..\');' . "\r\n");
-				fwrite($fp, "\t" . '$master->setTitle(\'E.M. Réparation | ' . localize(self::$_menuItem[$i]["id"]) . '\');' . "\r\n");
+				fwrite($fp, "\t" . '$master->setTitle(\'' . localize(self::$_menuItem[$i]["id"]) . '\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setCurrentPage(\'' . self::$_menuItem[$i]["id"] . '\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setHead(\'\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setContent(' . "\r\n");

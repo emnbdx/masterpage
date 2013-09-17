@@ -2,7 +2,7 @@
 	require_once('include/masterpage.php');
 	
 	$master = MasterPage::getInstance('.');
-	$master->setTitle('E.M. Réparation');
+	$master->setTitle('');
 	$master->setCurrentPage('index');
 	$master->setContent(
 		'<div id="content">
