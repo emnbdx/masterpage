@@ -113,8 +113,8 @@ class MasterPage {
 		echo '<html>';
 		echo '<head>';
 			echo '<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />';
-			echo '<meta name="keywords" content="réparation pc, réparation pc bordeaux, panne pc, mac, iphone, sony, pas cher, eddy montus, em, em reparation, emrepartion, emréparation, em réparation" />';
-			echo '<meta name="description" content="Réparation de pc, mac et téléphone sur Bordeaux" />';
+			echo '<meta name="keywords" content="" />';
+			echo '<meta name="description" content="" />';
 			echo "<title>$this->_title</title>";
 
 			echo '<link href="' . $this->_rootPath . '/style/global.css" rel="stylesheet" type="text/css" />';
@@ -205,9 +205,9 @@ class MasterPage {
 						echo '				© 2013 by Eddy MONTUS';
 						echo '				</td>';
 						echo '				<td id="footerRight">';
-						echo '					<a href="http://www.facebook.com/profile.php?id=163042063855201" rel="nofollow">';
+						echo '					<a href="http://www.facebook.com" rel="nofollow">';
 						echo '					<img height="25" src="' . $this->_rootPath . '/images/facebook.png" alt="facebook" width="25" /></a>';
-						echo '					<a href="http://www.twitter.com/emreparation" rel="nofollow">';
+						echo '					<a href="http://www.twitter.com" rel="nofollow">';
 						echo '					<img src="' . $this->_rootPath . '/images/twitter.png" alt="twitter" width="25" height="25" /></a>';
 						echo '				</td>';
 						echo '			</tr>';
