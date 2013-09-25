@@ -28,6 +28,7 @@ $messages = array (
 		'text' => 'Ceci est un texte localisé',
 		'dummytext' => 'Ceci est un text auto généré',
 		'category1' => 'Catégorie 1',
+		'c1' => 'Contenu 1',
     ),
     
     'en' => array(
@@ -40,6 +41,7 @@ $messages = array (
 		'text' => 'This is a localized text',
 		'dummytext' => 'This is an auto generated page',
 		'category1' => 'Category 1',
+		'c1' => 'Content 1',
     )
 );
 

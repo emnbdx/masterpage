@@ -32,7 +32,7 @@ function localize($s) {
 
 class MasterPage {
 
-	private static $_instance = null;
+	private static $_instance;
 	/*
 	 * Define all menu here, go to http://localhost/index.php and all file will create immediately on 'contenu' folder
 	 * Then you have to complete function setHead(''); with css or javascript code
@@ -53,7 +53,7 @@ class MasterPage {
 	private $_title;
 	private $_currentPage;
 	private $_head;
-	private $_content;
+	private $_content = array();
 	
 	/*
 	 * Define css class to apply on menu
@@ -86,7 +86,7 @@ class MasterPage {
 				fwrite($fp, "\t" . '$master->setTitle(\'' . localize(self::$_menuItem[$i]["id"]) . '\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setCurrentPage(\'' . self::$_menuItem[$i]["id"] . '\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setHead(\'\');' . "\r\n");
-				fwrite($fp, "\t" . '$master->setContent(' . "\r\n");
+				fwrite($fp, "\t" . '$master->setContent(0, ' . "\r\n");
 				fwrite($fp, "\t\t" . '\'<div id="content">\'' . "\r\n");
 				fwrite($fp, "\t\t\t" . '. localize(\'dummytext\') .' . "\r\n");
 				fwrite($fp, "\t\t" . '\'</div>\');' . "\r\n");
@@ -101,6 +101,11 @@ class MasterPage {
 		if(is_null(self::$_instance)) {
 			self::$_instance = new MasterPage($_rootPath);  
 		}
+		
+		$_title = '';
+		$_currentPage = '';
+		$_head = '';
+		$_content = array();
  
 		return self::$_instance;
 	}
@@ -193,7 +198,9 @@ class MasterPage {
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>';
-						echo "$this->_content";
+						echo $this->getContent(0);
+						echo '<br>';
+						echo $this->getContent(1);
 					echo '</td>';
 				echo '</tr>';
 				echo '<tr>';
@@ -257,12 +264,16 @@ class MasterPage {
 	/*
 	 * Content to display in page, it might be HTML code
 	 */
-	public function getContent() {
-		return $this->_content;
+	public function getContent($count) {
+		if(count($this->_content) > $count) {
+			return $this->_content[$count];
+		} else {
+			return '';
+		}
 	}
 	
-	public function setContent($content) {
-		$this->_content = $content;
+	public function setContent($count, $content) {
+		$this->_content[$count] = $content;
 	}
 }
 ?>
