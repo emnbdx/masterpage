@@ -265,7 +265,7 @@ class MasterPage {
 	 * Content to display in page, it might be HTML code
 	 */
 	public function getContent($count) {
-		if(count($this->_content) > $count) {
+		if(isset($this->_content[$count])) {
 			return $this->_content[$count];
 		} else {
 			return '';
