@@ -60,9 +60,9 @@ class MasterPage {
 	 */
 	private function getClass($objId) {
 		if($objId == $this->_currentPage) {
-			echo 'current';
+			return "current";
 		} else {
-			echo 'non_current';
+			return "non_current";
 		}
 	}
 	
@@ -184,8 +184,9 @@ class MasterPage {
 						
 						$arrayLength = count(self::$_menuItem);
 						for ($i = 0; $i < $arrayLength; $i++) {
-							echo '				<td class="'; $this->getClass(self::$_menuItem[$i]["id"]); 
-							echo '" width="' . (100 / $arrayLength) . '%"><a id="'. self::$_menuItem[$i]["id"] . '" href="' . $this->_rootPath . self::$_menuItem[$i]["page"] . '">' . localize(self::$_menuItem[$i]["id"]) . '</a></td>';
+							echo '		<td class="' . $this->getClass(self::$_menuItem[$i]["id"]) . '" width="' . (100 / $arrayLength) . '%">';
+							echo '			<a id="'. self::$_menuItem[$i]["id"] . '" href="' . $this->_rootPath . self::$_menuItem[$i]["page"] . '">' . localize(self::$_menuItem[$i]["id"]) . '</a></td>';
+							echo '		</td>';
 						}
 						echo '			</tr>';
 						echo '		</table>';
