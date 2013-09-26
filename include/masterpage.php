@@ -210,7 +210,7 @@ class MasterPage {
 						echo '		<table>';
 						echo '			<tr>';
 						echo '				<td id="footerLeft">';
-						echo '				© 2013 by Eddy MONTUS';
+						echo '				© 2013 by <a style="text-decoration: underline;" href="http://www.eddymontus.fr">Eddy MONTUS</a>';
 						echo '				</td>';
 						echo '				<td id="footerRight">';
 						echo '					<a href="http://www.facebook.com" rel="nofollow">';
