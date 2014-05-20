@@ -73,9 +73,8 @@ class MasterPage {
 		$this->_rootPath = $_rootPath;
 			
 		//Now check if all menu exist, if not create empty page
-		$arrayLength = count(self::$_menuItem);
-		for ($i = 0; $i < $arrayLength; $i++) {
-			$filename = $this->_rootPath . self::$_menuItem[$i]["page"];
+		foreach(self::$_menuItem as $item) {
+			$filename = $this->_rootPath . $item["page"];
 		
 			if (!file_exists($filename)) {
 				$fp = fopen($filename, 'w');
@@ -83,8 +82,8 @@ class MasterPage {
 				fwrite($fp, "\t" . 'define(\'__PAGEROOT__\', dirname(dirname(__FILE__)));' . "\r\n");
 				fwrite($fp, "\t" . 'require_once(__PAGEROOT__.\'/include/masterpage.php\');' . "\r\n\r\n");
 				fwrite($fp, "\t" . '$master = MasterPage::getInstance(\'..\');' . "\r\n");
-				fwrite($fp, "\t" . '$master->setTitle(\'' . localize(self::$_menuItem[$i]["id"]) . '\');' . "\r\n");
-				fwrite($fp, "\t" . '$master->setCurrentPage(\'' . self::$_menuItem[$i]["id"] . '\');' . "\r\n");
+				fwrite($fp, "\t" . '$master->setTitle(\'' . localize($item["id"]) . '\');' . "\r\n");
+				fwrite($fp, "\t" . '$master->setCurrentPage(\'' . $item["id"] . '\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setHead(\'\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setContent(0, ' . "\r\n");
 				fwrite($fp, "\t\t" . '\'<div id="content">\'' . "\r\n");
@@ -181,10 +180,9 @@ class MasterPage {
 						echo '			<table>';
 						echo '			<tr>';
 						
-						$arrayLength = count(self::$_menuItem);
-						for ($i = 0; $i < $arrayLength; $i++) {
-							echo '		<td class="' . $this->getClass(self::$_menuItem[$i]["id"]) . '" width="' . (100 / $arrayLength) . '%">';
-							echo '			<a id="'. self::$_menuItem[$i]["id"] . '" href="' . $this->_rootPath . self::$_menuItem[$i]["page"] . '">' . localize(self::$_menuItem[$i]["id"]) . '</a></td>';
+						foreach(self::$_menuItem as $item) {
+							echo '		<td class="' . $this->getClass($item["id"]) . '" width="' . (100 / count(self::$_menuItem)) . '%">';
+							echo '			<a id="'. $item["id"] . '" href="' . $this->_rootPath . $item["page"] . '">' . localize($item["id"]) . '</a></td>';
 							echo '		</td>';
 						}
 						echo '			</tr>';
@@ -209,12 +207,12 @@ class MasterPage {
 						echo '		<table>';
 						echo '			<tr>';
 						echo '				<td id="footerLeft">';
-						echo '				© 2013 by <a style="text-decoration: underline;" href="http://www.eddymontus.fr">Eddy MONTUS</a>';
+						echo '				© 2013 by <a style="text-decoration: underline;" href="http://www.eddymontus.fr" target="_blank">Eddy MONTUS</a>';
 						echo '				</td>';
 						echo '				<td id="footerRight">';
-						echo '					<a href="http://www.facebook.com" rel="nofollow">';
+						echo '					<a href="http://www.facebook.com" rel="nofollow" target="_blank">';
 						echo '					<img height="25" src="' . $this->_rootPath . '/images/facebook.png" alt="facebook" width="25" /></a>';
-						echo '					<a href="http://www.twitter.com" rel="nofollow">';
+						echo '					<a href="http://www.twitter.com" rel="nofollow" target="_blank">';
 						echo '					<img src="' . $this->_rootPath . '/images/twitter.png" alt="twitter" width="25" height="25" /></a>';
 						echo '				</td>';
 						echo '			</tr>';
