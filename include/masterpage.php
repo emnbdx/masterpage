@@ -85,7 +85,7 @@ class MasterPage {
 				fwrite($fp, "\t" . '$master->setTitle(\'' . localize($item["id"]) . '\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setCurrentPage(\'' . $item["id"] . '\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setHead(\'\');' . "\r\n");
-				fwrite($fp, "\t" . '$master->setContent(0, ' . "\r\n");
+				fwrite($fp, "\t" . '$master->setContent("contenu1", ' . "\r\n");
 				fwrite($fp, "\t\t" . '\'<div id="content">\'' . "\r\n");
 				fwrite($fp, "\t\t\t" . '. localize(\'dummytext\') .' . "\r\n");
 				fwrite($fp, "\t\t" . '\'</div>\');' . "\r\n");
@@ -121,40 +121,13 @@ class MasterPage {
 			echo '<meta name="description" content="" />';
 			echo "<title>$this->_title</title>";
 
-			echo '<link href="' . $this->_rootPath . '/style/global.css" rel="stylesheet" type="text/css" />';
+			echo '<link href="' . $this->_rootPath . '/style/global.min.css" rel="stylesheet" type="text/css" />';
 			echo '<link href="http://fonts.googleapis.com/css?family=Jura:n,b,i,bi|Basic:n,b,i,bi" rel="stylesheet" type="text/css" />';
 			echo '<style type="text/css">';
 			echo '	.auto-style1 {';
 			echo '		color: #FF00FF;';
 			echo '	}';
 			echo '</style>';
-			
-			echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>';
-			echo '<script type="text/javascript">';
-			echo '$(document).ready(function() {';
-			echo '	$("#content").hide();';
-			echo ' 	$("#content").fadeIn(1000);';
-			echo '	$("a.transition").click(function(event){';
-			echo '		event.preventDefault();';
-			echo '		linkLocation = this.href;';
-			echo '		$("#content").fadeOut(500, redirectPage);';	
-			echo '	});';
-					
-			echo '	function redirectPage() {';
-			echo '		window.location = linkLocation;';
-			echo '	}';
-			
-			echo '});';
-			echo '</script>';
-			
-			echo '<script>';
-		  	echo '	(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){';
-		  	echo '	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),';
-		  	echo '	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)';
-		  	echo '	})(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');';
-		  	echo '	ga(\'create\', \'UA-40535132-1\', \'auto\');';
-		  	echo '	ga(\'send\', \'pageview\');';
-			echo '</script>';
 			
 			echo $this->_head;
 		echo '</head>';
@@ -193,9 +166,9 @@ class MasterPage {
 				echo '</tr>';
 				echo '<tr>';
 					echo '<td>';
-						echo $this->getContent(0);
+						echo $this->getContent("contenu1");
 						echo '<br>';
-						echo $this->getContent(1);
+						echo $this->getContent("contenu2");
 					echo '</td>';
 				echo '</tr>';
 				echo '<tr>';
@@ -204,7 +177,7 @@ class MasterPage {
 						echo '		<table>';
 						echo '			<tr>';
 						echo '				<td id="footerLeft">';
-						echo '				© ' . date("Y") . ' by <a style="text-decoration: underline;" href="http://www.eddymontus.fr" target="_blank">Eddy MONTUS</a>';
+						echo '				© 2012 - ' . date("Y") . ' by <a style="text-decoration: underline;" href="http://www.eddymontus.fr" target="_blank">Eddy MONTUS</a>';
 						echo '				</td>';
 						echo '				<td id="footerRight">';
 						echo '					<a href="http://www.facebook.com" rel="nofollow" target="_blank">';
@@ -218,6 +191,36 @@ class MasterPage {
 					echo '</td>';
 				echo '</tr>';
 			echo '</table>';
+
+			echo '<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>';
+			echo '<script type="text/javascript">';
+			echo '$(document).ready(function() {';
+			echo '	$("#content").hide();';
+			echo ' 	$("#content").fadeIn(1000);';
+			echo '	$("a.transition").click(function(event){';
+			echo '		event.preventDefault();';
+			echo '		linkLocation = this.href;';
+			echo '		$("#content").fadeOut(500, redirectPage);';	
+			echo '	});';
+					
+			echo '	function redirectPage() {';
+			echo '		window.location = linkLocation;';
+			echo '	}';
+			
+			echo '});';
+			echo '</script>';
+			
+			echo '<script>';
+		  	echo '	(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){';
+		  	echo '	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),';
+		  	echo '	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)';
+		  	echo '	})(window,document,\'script\',\'//www.google-analytics.com/analytics.js\',\'ga\');';
+		  	echo '	ga(\'create\', \'UA-40535132-1\', \'auto\');';
+		  	echo '	ga(\'send\', \'pageview\');';
+			echo '</script>';
+
+			echo $this->getContent("script");
+
 		echo '</body>';
 
 		echo '</html>';
@@ -259,16 +262,16 @@ class MasterPage {
 	/*
 	 * Content to display in page, it might be HTML code
 	 */
-	public function getContent($count) {
-		if(isset($this->_content[$count])) {
-			return $this->_content[$count];
+	public function getContent($key) {
+		if(isset($this->_content[$key])) {
+			return $this->_content[$key];
 		} else {
 			return '';
 		}
 	}
 	
-	public function setContent($count, $content) {
-		$this->_content[$count] = $content;
+	public function setContent($key, $content) {
+		$this->_content[$key] = $content;
 	}
 }
 ?>

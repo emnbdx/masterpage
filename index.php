@@ -4,7 +4,7 @@
 	$master = MasterPage::getInstance('.');
 	$master->setTitle('');
 	$master->setCurrentPage('index');
-	$master->setContent(0, 
+	$master->setContent("contenu1", 
 		'<div id="content">
 			<img height="54" src="images/arrow.png" alt="fleche" style="position: absolute; left: 28px; top: 73px;" width="64">
 			<div id="homeMainMessage" style="left: 116px; top: 25px">'
@@ -20,6 +20,6 @@
 				</div>
 			</div>
 		</div>');
-	$master->setContent(1, localize("c1")); 
+	$master->setContent("contenu2", localize("c1")); 
 	$master->display();
 ?>
