@@ -1,0 +1,51 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: masterpage\n"
+"POT-Creation-Date: 2015-05-06 11:03+0100\n"
+"PO-Revision-Date: 2015-05-06 11:04+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.4\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: D:\\Sources\\Php\\masterpage\n"
+
+#: D:\Sources\Php\masterpage/index.php:11
+msgid "text"
+msgstr "This is a localized text"
+
+#: D:\Sources\Php\masterpage/index.php:15
+msgid "category1"
+msgstr "Category 1"
+
+#: D:\Sources\Php\masterpage/index.php:23
+msgid "c1"
+msgstr "Content 1"
+
+#: D:\Sources\Php\masterpage/index.php:24
+msgid "index"
+msgstr "Home"
+
+#: D:\Sources\Php\masterpage/index.php:25
+msgid "price"
+msgstr "Price"
+
+#: D:\Sources\Php\masterpage/index.php:26
+msgid "me"
+msgstr "Who am I?"
+
+#: D:\Sources\Php\masterpage/index.php:27
+msgid "contact"
+msgstr "Contact"
+
+#: D:\Sources\Php\masterpage/index.php:28
+msgid "work"
+msgstr "Work"
+
+#: D:\Sources\Php\masterpage/index.php:29
+msgid "dummytext"
+msgstr "This is an auto generated page"

@@ -2,33 +2,8 @@
 
 session_start();
 
-define('__MASTERROOT__', dirname(dirname(__FILE__))); 
-require_once(__MASTERROOT__.'/include/resources.php'); 
-
-if(!isset($_SESSION["language"])) {
-    $_SESSION["language"] = 'default';
-}
-
-if (isset($_GET['lang'])) {
-    $_SESSION["language"] = $_GET['lang'];
-}
-
-/*
- * Localize text from resources.php file
- * Use this function localize(myvar) to localize according to session language 
- */
-function localize($s) {   
-	global $messages;
-	
-	if (isset($messages[$_SESSION["language"]][$s])) {
-		return $messages[$_SESSION["language"]][$s];
-	} else if (isset($messages['default'][$s])) {
-		return $messages['default'][$s];
-	} else {    
-		error_log("l10n error:LANG:" . 
-			$_COOKIE["language"] .",message:'$s'");
-	}
-}
+require_once('configuration.php');
+require_once('localization.php');
 
 class MasterPage {
 
@@ -69,25 +44,22 @@ class MasterPage {
 	/*
 	 * Constructor with all parameter, display function can be called immediately
 	 */
-	private function __construct($_rootPath) {
-		$this->_rootPath = $_rootPath;
-			
+	private function __construct() {			
 		//Now check if all menu exist, if not create empty page
 		foreach(self::$_menuItem as $item) {
-			$filename = $this->_rootPath . $item["page"];
+			$filename = dirname(dirname(__FILE__)) . $item["page"];
 		
 			if (!file_exists($filename)) {
 				$fp = fopen($filename, 'w');
 				fwrite($fp, '<?php' . "\r\n");
-				fwrite($fp, "\t" . 'define(\'__PAGEROOT__\', dirname(dirname(__FILE__)));' . "\r\n");
-				fwrite($fp, "\t" . 'require_once(__PAGEROOT__.\'/include/masterpage.php\');' . "\r\n\r\n");
-				fwrite($fp, "\t" . '$master = MasterPage::getInstance(\'..\');' . "\r\n");
-				fwrite($fp, "\t" . '$master->setTitle(\'' . localize($item["id"]) . '\');' . "\r\n");
+				fwrite($fp, "\t" . 'require_once(\'../include/masterpage.php\');' . "\r\n\r\n");
+				fwrite($fp, "\t" . '$master = MasterPage::getInstance();' . "\r\n");
+				fwrite($fp, "\t" . '$master->setTitle(\'' . _($item["id"]) . '\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setCurrentPage(\'' . $item["id"] . '\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setHead(\'\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->setContent("contenu1", ' . "\r\n");
 				fwrite($fp, "\t\t" . '\'<div id="content">\'' . "\r\n");
-				fwrite($fp, "\t\t\t" . '. localize(\'dummytext\') .' . "\r\n");
+				fwrite($fp, "\t\t\t" . '. _("dummytext") .' . "\r\n");
 				fwrite($fp, "\t\t" . '\'</div>\');' . "\r\n");
 				fwrite($fp, "\t" . '$master->display();' . "\r\n");
 				fwrite($fp, '?>' . "\r\n");
@@ -96,9 +68,9 @@ class MasterPage {
 		}
 	}
 	
-	public static function getInstance($_rootPath) {
+	public static function getInstance() {
 		if(is_null(self::$_instance)) {
-			self::$_instance = new MasterPage($_rootPath);  
+			self::$_instance = new MasterPage();  
 		}
 		
 		$_title = '';
@@ -121,7 +93,7 @@ class MasterPage {
 			echo '<meta name="description" content="" />';
 			echo "<title>$this->_title</title>";
 
-			echo '<link href="' . $this->_rootPath . '/style/global.min.css" rel="stylesheet" type="text/css" />';
+			echo '<link href="' . __ROOT__ . '/style/global.min.css" rel="stylesheet" type="text/css" />';
 			echo '<link href="http://fonts.googleapis.com/css?family=Jura:n,b,i,bi|Basic:n,b,i,bi" rel="stylesheet" type="text/css" />';
 			echo '<style type="text/css">';
 			echo '	.auto-style1 {';
@@ -139,7 +111,7 @@ class MasterPage {
 					
 					global $languages;
 					foreach (array_keys($languages) as $language) {
-						echo '	<a href="?lang=' . $language . '"><img width="50" height="50" src="' . $this->_rootPath . $languages[$language]["img"] . '" alt="'. $languages[$language]["alt"] . '" /></a>';
+						echo '	<a href="?lang=' . $language . '"><img width="50" height="50" src="' . __ROOT__ . $languages[$language]["img"] . '" alt="'. $languages[$language]["alt"] . '" /></a>';
 					}
 					echo '</td>';
 				echo '</tr>';
@@ -152,7 +124,7 @@ class MasterPage {
 						
 						foreach(self::$_menuItem as $item) {
 							echo '		<td class="' . $this->getClass($item["id"]) . '" width="' . (100 / count(self::$_menuItem)) . '%">';
-							echo '			<a id="'. $item["id"] . '" href="' . $this->_rootPath . $item["page"] . '">' . localize($item["id"]) . '</a></td>';
+							echo '			<a id="'. $item["id"] . '" href="' . __ROOT__ . $item["page"] . '">' . _($item["id"]) . '</a></td>';
 							echo '		</td>';
 						}
 						echo '			</tr>';
@@ -181,9 +153,9 @@ class MasterPage {
 						echo '				</td>';
 						echo '				<td id="footerRight">';
 						echo '					<a href="http://www.facebook.com" rel="nofollow" target="_blank">';
-						echo '					<img height="25" src="' . $this->_rootPath . '/images/facebook.png" alt="facebook" width="25" /></a>';
+						echo '					<img height="25" src="' . __ROOT__ . '/images/facebook.png" alt="facebook" width="25" /></a>';
 						echo '					<a href="http://www.twitter.com" rel="nofollow" target="_blank">';
-						echo '					<img src="' . $this->_rootPath . '/images/twitter.png" alt="twitter" width="25" height="25" /></a>';
+						echo '					<img src="' . __ROOT__ . '/images/twitter.png" alt="twitter" width="25" height="25" /></a>';
 						echo '				</td>';
 						echo '			</tr>';
 						echo '		</table>';
